@@ -14,10 +14,10 @@ enum Lights {
 
 struct ContentView: View {
     
-    @State private var currentLight = Lights.allLightsIsOff
     @State private var nameButton = "GO"
+    @State private var currentLight = Lights.allLightsIsOff
     
-    fileprivate func nextColor() {
+    private func nextColor() {
         if currentLight == .red {
             currentLight = .yellow
         } else if currentLight == .yellow {
@@ -30,65 +30,26 @@ struct ContentView: View {
     var body: some View {
         
         ZStack{
-            VStack{
-                if currentLight == .red {
-                    redLight.opacity(1)
-                    yellowLight.opacity(0.2)
-                    greenLight.opacity(0.2)
-                } else if currentLight == .yellow {
-                    redLight.opacity(0.2)
-                    yellowLight.opacity(1)
-                    greenLight.opacity(0.2)
-                } else if currentLight == .green {
-                    redLight.opacity(0.2)
-                    yellowLight.opacity(0.2)
-                    greenLight.opacity(1)
-                } else {
-                    redLight.opacity(0.2)
-                    yellowLight.opacity(0.2)
-                    greenLight.opacity(0.2)
-                }
+            Color.black
+                .ignoresSafeArea()
+            
+            VStack(spacing: 20) {
+                ColorCircle(color: .red, opacity: currentLight == .red ? 1 : 0.2)
+                ColorCircle(color: .yellow, opacity: currentLight == .yellow ? 1 : 0.2)
+                ColorCircle(color: .green, opacity: currentLight == .green ? 1 : 0.2)
                 
-                Spacer(minLength: 300)
+                Spacer()
                 
-                Button(action: {
-                    nameButton = "NEXT"
+                ChangeColorButton(title: nameButton) {
+                    if nameButton == "GO" {
+                        nameButton = "NEXT"
+                    }
                     nextColor()
-                }) {
-                    Text("\(nameButton)")
-                        .fontWeight(.bold)
-                        .font(.title)
-                        .padding()
-                        .frame(width: 250)
-                        .background(Color.blue)
-                        .cornerRadius(25)
-                        .foregroundColor(.white)
-                        .overlay(RoundedRectangle(cornerRadius: 25)
-                                    .stroke(Color.white, lineWidth: 4)
-                        )
                 }
-                
             }
-        }.background(Color.black)
+            .padding()
+        }
     }
-}
-
-var redLight: some View {
-    Circle()
-        .foregroundColor(.red)
-        .overlay(Circle().stroke(Color.white, lineWidth: 4))
-}
-
-var yellowLight: some View {
-    Circle()
-        .foregroundColor(.yellow)
-        .overlay(Circle().stroke(Color.white, lineWidth: 4))
-}
-
-var greenLight: some View {
-    Circle()
-        .foregroundColor(.green)
-        .overlay(Circle().stroke(Color.white, lineWidth: 4))
 }
 
 struct ContentView_Previews: PreviewProvider {
@@ -99,3 +60,4 @@ struct ContentView_Previews: PreviewProvider {
         }
     }
 }
+
